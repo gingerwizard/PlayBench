@@ -19,13 +19,15 @@ cat queries.sql | while read query; do
     clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --format=Null --query="SYSTEM DROP FILESYSTEM CACHE${on_cluster}"
     echo -n "[" >> temp.json
     for i in $(seq 1 $TRIES); do
-        RES=$(clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --time --format=Null --query="$query" 2>&1 > /dev/null ||:)
+        RES=$(clickhouse client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --time --format=Null --query="$query" 2> errFile)
         if [[ "$?" == "0" ]]; then
             echo "${QUERY_NUM}, ${i} - OK"
             echo -n "${RES}" >> temp.json
         else
-            echo "${QUERY_NUM}, ${i} - FAIL"
+            ERR=$(<errFile)
+            echo "${QUERY_NUM}, ${i} - FAIL - ${ERR}"
             echo -n "null" >> temp.json
+            rm errFile
         fi
         [[ "$i" != $TRIES ]] && echo -n "," >> temp.json
     done
