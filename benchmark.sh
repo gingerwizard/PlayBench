@@ -9,6 +9,7 @@ cloud=$1
 on_cluster=""
 if [ "$cloud" = "true" ] ; then
     on_cluster=" ON CLUSTER 'default'"
+    echo "running against cloud cluster"
 fi
 
 data_size=$(clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --query="SELECT sum(total_bytes) FROM system.tables WHERE database IN ('blogs', 'default')")

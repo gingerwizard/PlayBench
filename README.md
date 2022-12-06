@@ -28,7 +28,7 @@ The limitations of this benchmark allow keeping it easy to reproduce and to incl
 
 ### How To Add a New Result
 
-To add a self-managed or play Cloud environment, simply run `benchmark.sh`.
+To add a self-managed or play Cloud environment, simply run `benchmark.sh <is_cloud>` , where `<is_cloud>` is `true` or `false` and denotes if the cluster is in ClickHouse Cloud (to be improved).
 
 This script will generate a `results.json` file. Modify the contents of this including:
 
@@ -71,6 +71,8 @@ while IFS= read -r line; do echo "$line" | base64 --decode | tr '\n' ' ' | tr -s
 ```bash
 ~/clickhouse client --host 52.59.38.70 --password <password> --secure --user migrate --query "SELECT any(query) || '\n--------------------------' FROM system.query_log WHERE query_kind='Select' AND hasAny(databases, ['blogs', 'default', 'git_clickhouse']) AND read_rows > 0 AND user != 'default' GROUP BY normalized_query_hash FORMAT TabSeparatedRaw" | awk 'NF' | awk '{$1=$1;print}'  | tr '\n' ' ' | sed 's/-------------------------- /\n/g' | sed '/^[-\/#]/d' | sed 's/[Ss]elect /SELECT /g' | sed 's/ from / FROM /g' | sed 's/ group / GROUP /g' | sed 's/ where / WHERE /g' | sed 's/ [lL]imit / LIMIT /g' | sed 's/ [Or]der [By]y / ORDER BY /g' | sed 's/^[wW]ith /WITH /g' |  sed 's/;//g' | sort | uniq -i -u > queries.sql
 ```
+
+**Caveat** - above will include queries with `today()` and `now()` - assumes your dataset is upto date.
 
 #### Validate queries
 
