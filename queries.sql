@@ -134,7 +134,7 @@ SELECT "radio", "samples", Max(samples) FROM "cell_towers" WHERE "radio"='LTE' a
 SELECT "radio", "samples", Max(samples) FROM "cell_towers" WHERE "radio"='LTE' and "created"> 2017-01-01 GROUP BY "samples", "radio", "created" ORDER BY MAX ("samples"), "created" DESC
 SELECT "radio", "samples", Max(samples) FROM "cell_towers" WHERE "radio"='LTE' and "created"> 2017-01-01 GROUP BY "samples", "radio", "created" ORDER BY MAX ("samples"), "radio" desc
 SELECT 'net','range',max(cnt=1) as net_to_range from( SELECT net,count(distinct range) cnt FROM cell_towers GROUP by net ) LIMIT 100
-SELECT (intDiv(toUInt32(created), 2) * 2) * 1000 as t, count() FROM default.cell_towers WHERE created >= toDateTime(1669210240) AND created <= toDateTime(1669213840) GROUP BY t ORDER BY t FORMAT JSON
+SELECT (intDiv(toUInt32(created), 2) * 2) * 1000 as t, count() FROM default.cell_towers WHERE created >= toDateTime(1669210240) AND created <= toDateTime(1669213840) GROUP BY t ORDER BY t
 SELECT * FROM blogs.forex LIMIT 100
 SELECT * APPLY(toJSONString) FROM reddit LIMIT 5
 SELECT * EXCEPT (subreddit) FROM reddit LIMIT 5
@@ -161,8 +161,8 @@ SELECT * FROM (SELECT date, groupArray( (location_key, new_tested) ) AS state FR
 SELECT * FROM (SELECT date, groupArray( (location_key, new_tested) ) AS state FROM (SELECT date, location_key, SUM(new_tested) AS new_tested FROM covid GROUP BY date, location_key) WHERE location_key in ('RU', 'KZ', 'BY') GROUP BY date) WHERE arrayFirstIndex(l->l.2=0, state) = 1 AND arrayLastIndex(l->l.2=0, state) = 1
 SELECT * FROM (SELECT date, new_tested as new_tested FROM covid WHERE location_key = 'RU') AS ru INNER JOIN (SELECT date, new_tested as new_tested FROM covid WHERE location_key = 'KZ') AS kz ON ru.date = kz.date
 SELECT * FROM (SELECT sum(new_tested) as new_tested, date FROM covid WHERE location_key = 'RU' GROUP BY date) as ru Inner Join (SELECT sum(new_tested) as new_tested, date FROM covid WHERE location_key = 'KZ' GROUP BY date) as kz ON ru.date = kz.date WHERE ru.new_tested < kz.new_tested
-SELECT * FROM `blogs`.`forex` LIMIT 101 FORMAT Native
-SELECT * FROM `default`.`github_events` LIMIT 101 FORMAT Native
+SELECT * FROM `blogs`.`forex` LIMIT 101
+SELECT * FROM `default`.`github_events` LIMIT 101
 SELECT * FROM benchmark_runs LIMIT 10
 SELECT * FROM blogs.countries LIMIT 1
 SELECT * FROM blogs.countries LIMIT 10
@@ -347,7 +347,7 @@ SELECT * FROM hackernews WHERE deleted = 0
 SELECT * FROM hackernews WHERE type = 'story'
 SELECT * FROM hits LIMIT 10
 SELECT * FROM hits LIMIT 100
-SELECT * FROM hits LIMIT 1000000 FORMAT Native
+SELECT * FROM hits LIMIT 1000000
 SELECT * FROM hits LIMIT 3
 SELECT * FROM hits WHERE EventDate = '2013-07-15' LIMIT 10
 SELECT * FROM hits WHERE EventDate = '2013-07-15' and UserID = 15985305027620249815 LIMIT 100
@@ -374,13 +374,13 @@ SELECT * FROM hits_100m_obfuscated WHERE toDate(ClientEventTime)>'2013-07-01'
 SELECT * FROM lineorder LIMIT 100
 SELECT * FROM loc_stats
 SELECT * FROM menu LIMIT 10,10
-SELECT * FROM menu LIMIT 5000 FORMAT Native
+SELECT * FROM menu LIMIT 5000
 SELECT * FROM menu WHERE sponsor= 'NORDDEUTSCHER LLOYD BREMEN'
 SELECT * FROM menu WHERE sponsor= 'NORDDEUTSCHER LLOYD BREMEN' and event= 'LUNCH'
 SELECT * FROM menu WHERE sponsor= 'NORDDEUTSCHER LLOYD BREMEN' and event= 'LUNCH' or event= 'DINNER'
 SELECT * FROM menu_item
 SELECT * FROM menu_item LIMIT 10
-SELECT * FROM menu_item_denorm LIMIT 5000 FORMAT Native
+SELECT * FROM menu_item_denorm LIMIT 5000
 SELECT * FROM ontime
 SELECT * FROM ontime WHERE Year = 1987 LIMIT 5
 SELECT * FROM opensky LIMIT 10
@@ -440,15 +440,15 @@ SELECT * From cell_towers Where radio ='GSM' ORDER BY 'samples' DESC
 SELECT * From cell_towers Where radio ='GSM' ORDER BY samples DESC
 SELECT * From cell_towers Where radio ='UMTS'
 SELECT * From cell_towers Where radio ='UMTS' Order by 'samples' DESC
-SELECT *, ACOS(ABS(CounterID)) FROM hits LIMIT 100000 FORMAT Native
-SELECT *, ACOS(CounterID) FROM hits LIMIT 100000 FORMAT Native
+SELECT *, ACOS(ABS(CounterID)) FROM hits LIMIT 100000
+SELECT *, ACOS(CounterID) FROM hits LIMIT 100000
 SELECT *, check_name, check_start_time FROM default.checks LIMIT 100
 SELECT *, subreddit FROM reddit LIMIT 5
 SELECT *, subreddit as lol FROM reddit LIMIT 5
 SELECT *from opensky
 SELECT 10 FROM recipes LIMIT 10
-SELECT ACOS(ABS(CounterID)) FROM hits LIMIT 100000 FORMAT Native
-SELECT ACOS(CounterID) FROM hits LIMIT 100000 FORMAT Native
+SELECT ACOS(ABS(CounterID)) FROM hits LIMIT 100000
+SELECT ACOS(CounterID) FROM hits LIMIT 100000
 SELECT AVG(samples) FROM cell_towers GROUP BY radio
 SELECT AVG(samples), MAX(created), radio FROM cell_towers GROUP BY radio
 SELECT AVG(samples), radio FROM cell_towers GROUP BY radio
@@ -471,14 +471,14 @@ SELECT COUNT (radio) FROM cell_towers WHERE lon BETWEEN 54 AND 56 AND lat BETWEE
 SELECT COUNT() FROM cell_towers
 SELECT COUNT() FROM recipes
 SELECT COUNT() as sumCounts
-SELECT COUNT(*) AS `COUNT(*)` FROM `default`.`github_events` LIMIT 50000 FORMAT Native
+SELECT COUNT(*) AS `COUNT(*)` FROM `default`.`github_events` LIMIT 50000
 SELECT COUNT(*) FROM (SELECT * FROM git_clickhouse.commits c ) dbvrcnt
 SELECT COUNT(*) FROM (SELECT DISTINCT c.author, COUNT(c.hash) OVER (PARTITION BY c.author) FROM git_clickhouse.commits c ) dbvrcnt
 SELECT COUNT(*) FROM (SELECT DISTINCT c.author, COUNT(c.hash) OVER (PARTITION BY c.author) as `commit_count`, MIN(c.`time`) OVER (PARTITION BY c.author) as `first_commit` FROM git_clickhouse.commits c ) dbvrcnt
 SELECT COUNT(*) FROM (SELECT DISTINCT c.author, COUNT(c.hash) OVER (PARTITION BY c.author) as `commit_count`, MIN(c.`time`) OVER (PARTITION BY c.author) as `first_commit`, MAX(c.`time`) OVER (PARTITION BY c.author) as `last_commit` FROM git_clickhouse.commits c ) dbvrcnt
 SELECT COUNT(*) FROM (SELECT c.author, COUNT(c.hash) OVER (ORDER BY c.author) FROM git_clickhouse.commits c ) dbvrcnt
 SELECT COUNT(*) FROM (SELECT c.author, COUNT(c.hash) as commit_count, MIN(c.`time`) as first_commit, max(c.`time`) as last_commit FROM git_clickhouse.commits c GROUP BY c.author ) dbvrcnt
-SELECT COUNT(*) FROM `blogs`.`forex` LIMIT 1001 FORMAT Native
+SELECT COUNT(*) FROM `blogs`.`forex` LIMIT 1001
 SELECT COUNT(*) FROM `default`.checks
 SELECT COUNT(*) FROM `default`.covid
 SELECT COUNT(*) FROM `default`.github_events
@@ -597,8 +597,8 @@ SELECT RegionID , OS, sum(NetMajor), count() FROM hits_100m_compatible WHERE Net
 SELECT RegionID , OS, sum(NetMajor), count() FROM hits_100m_compatible WHERE OS = 44 GROUP by RegionID , OS
 SELECT RegionID , OS, sum(NetMajor), count() FROM hits_100m_compatible WHERE RegionID = 26449 GROUP by RegionID , OS
 SELECT SUM("IsNotBounce") AS "IsNotBounce", "BrowserCountry" AS "BrowserCountry", SUM("CookieEnable") AS "CookieEnable", SUM("IsNotBounce") AS "IsNotBounce", "BrowserCountry" AS "BrowserCountry", SUM("CookieEnable") AS "CookieEnable" FROM "default"."hits" GROUP BY "BrowserCountry", "BrowserCountry"
-SELECT Time as DateTime, count() FROM github_events WHERE (repo_name = 'grafana/grafana') AND(event_type = 'PullRequestEvent') AND(Time >= 1666618231) AND(Time <= 1669213831) GROUP BY toStartOfDay(created_at) AS Time ORDER BY Time ASC FORMAT JSON
-SELECT Time as DateTime, count() FROM github_events WHERE (repo_name = 'grafana/grafana') AND(event_type = 'PullRequestEvent') GROUP BY toStartOfDay(created_at) AS Time ORDER BY Time ASC FORMAT JSON
+SELECT Time as DateTime, count() FROM github_events WHERE (repo_name = 'grafana/grafana') AND(event_type = 'PullRequestEvent') AND(Time >= 1666618231) AND(Time <= 1669213831) GROUP BY toStartOfDay(created_at) AS Time ORDER BY Time ASC
+SELECT Time as DateTime, count() FROM github_events WHERE (repo_name = 'grafana/grafana') AND(event_type = 'PullRequestEvent') GROUP BY toStartOfDay(created_at) AS Time ORDER BY Time ASC
 SELECT ToP 10 * FROM menu_item_denorm
 SELECT UserID FROM hits GROUP BY UserID HAVING UserID = '8585742290196126178'
 SELECT UserID FROM hits LIMIT 10
@@ -648,7 +648,7 @@ SELECT WatchID FROM hits WHERE WatchID = 4611686071420045196 GROUP by WatchID or
 SELECT WatchID FROM hits WHERE WatchID = 4611686071420045196 GROUP by WatchID order by WatchID UNION ALL SELECT WatchID FROM hits WHERE WatchID = 4611686071420045196
 SELECT WatchID FROM hits WHERE WatchID = 4611686071420045196 GROUP by WatchID order by WatchID UNION ALL SELECT WatchID FROM hits WHERE WatchID = 4611686071420045196 GROUP by WatchID order by WatchID
 SELECT WatchID as test FROM hits WHERE WatchID = 4611686071420045196 GROUP by test order by test
-SELECT WatchID as watch FROM hits LIMIT 10 FORMAT Arrow
+SELECT WatchID as watch FROM hits LIMIT 10
 SELECT WatchID, EventTime, EventDate, UserID, rank() over (partition by UserID order by EventTime) r FROM hits WHERE EventDate = '2013-07-15' and UserID = 15985305027620249815 LIMIT 100
 SELECT WatchID,JavaEnable,Title,GoodEvent,EventTime AS EventTime ,EventDate,CounterID,ClientIP FROM hits WHERE EventTime > '2010-07-15 19:26:13' order by EventTime desc LIMIT 10
 SELECT WatchID,JavaEnable,Title,GoodEvent,EventTime AS EventTime1 ,EventDate,CounterID,ClientIP FROM hits WHERE EventTime > '2010-07-15 19:26:13' order by EventTime desc LIMIT 10
@@ -663,12 +663,12 @@ SELECT ['author','body'] FROM reddit
 SELECT `NER_lower`, `count`, `percent` FROM ( SELECT `NER_lower`, `count`, `percent` FROM ( SELECT `NER_lower`, `count`, `percent` FROM ( SELECT t3.`NER_lower`, t3.`count`, t3.`percent` FROM ( SELECT * FROM ( SELECT *, (`count` * 100) / sum(`count`) OVER (ORDER BY Null) AS `percent` FROM ( SELECT lower(`NER`) AS `NER_lower`, count(lower(`NER`)) AS `count` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER`, lower(`NER`) AS `NER_lower` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, arrayJoin(`NER`) AS `NER` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER` FROM default.`recipes` ) t9 ) t8 ) t7 GROUP BY `NER_lower` ) t6 ) t5 ORDER BY `count` DESC ) t3 WHERE match(t3.`NER_lower`, 'salt') ) t2 ) t1 ) t0
 SELECT `NER_lower`, `count`, `percent` FROM ( SELECT `NER_lower`, `count`, `percent` FROM ( SELECT t2.`NER_lower`, t2.`count`, t2.`percent` FROM ( SELECT * FROM ( SELECT *, (`count` * 100) / sum(`count`) OVER (ORDER BY Null) AS `percent` FROM ( SELECT lower(`NER`) AS `NER_lower`, count(lower(`NER`)) AS `count` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER`, lower(`NER`) AS `NER_lower` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, arrayJoin(`NER`) AS `NER` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER` FROM default.`recipes` ) t8 ) t7 ) t6 GROUP BY `NER_lower` ) t5 ) t4 ORDER BY `count` DESC ) t2 WHERE match(t2.`NER_lower`, 'salt') ) t1 ) t0 LIMIT 500
 SELECT `NER_lower`, `count`, `percent` FROM ( SELECT t1.`NER_lower`, t1.`count`, t1.`percent` FROM ( SELECT * FROM ( SELECT *, (`count` * 100) / sum(`count`) OVER (ORDER BY Null) AS `percent` FROM ( SELECT lower(`NER`) AS `NER_lower`, count(lower(`NER`)) AS `count` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER`, lower(`NER`) AS `NER_lower` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, arrayJoin(`NER`) AS `NER` FROM ( SELECT `title`, `ingredients`, `directions`, `link`, `source`, `NER` FROM default.`recipes` ) t7 ) t6 ) t5 GROUP BY `NER_lower` ) t4 ) t3 ORDER BY `count` DESC ) t1 WHERE match(t1.`NER_lower`, 'salt') ) t0 LIMIT 10000
-SELECT `commits` AS `commits` FROM `default`.`github_events` GROUP BY `commits` LIMIT 1000 FORMAT Native
-SELECT `date`, `count` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` LIMIT 1000 FORMAT Native
-SELECT `date`, `count` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` LIMIT 1000 FORMAT Native
-SELECT `event_type` AS `event_type`, COUNT(*) AS `count` FROM `default`.`github_events` GROUP BY `event_type` ORDER BY `count` DESC LIMIT 100 FORMAT Native
-SELECT `file_time` AS `file_time`, `event_type` AS `event_type`, `actor_login` AS `actor_login`, `repo_name` AS `repo_name`, `created_at` AS `created_at`, `updated_at` AS `updated_at`, `action` AS `action`, `comment_id` AS `comment_id`, `body` AS `body`, `path` AS `path`, `position` AS `position`, `line` AS `line`, `ref` AS `ref`, `ref_type` AS `ref_type`, `creator_user_login` AS `creator_user_login`, `number` AS `number`, `title` AS `title`, `labels` AS `labels`, `state` AS `state`, `locked` AS `locked`, `assignee` AS `assignee`, `assignees` AS `assignees`, `comments` AS `comments`, `author_association` AS `author_association`, `closed_at` AS `closed_at`, `merged_at` AS `merged_at`, `merge_commit_sha` AS `merge_commit_sha`, `requested_reviewers` AS `requested_reviewers`, `requested_teams` AS `requested_teams`, `head_ref` AS `head_ref`, `head_sha` AS `head_sha`, `base_ref` AS `base_ref`, `base_sha` AS `base_sha`, `merged` AS `merged`, `mergeable` AS `mergeable`, `rebaseable` AS `rebaseable`, `mergeable_state` AS `mergeable_state`, `merged_by` AS `merged_by`, `review_comments` AS `review_comments`, `maintainer_can_modify` AS `maintainer_can_modify`, `commits` AS `commits`, `additions` AS `additions`, `deletions` AS `deletions`, `changed_files` AS `changed_files`, `diff_hunk` AS `diff_hunk`, `original_position` AS `original_position`, `commit_id` AS `commit_id`, `original_commit_id` AS `original_commit_id`, `push_size` AS `push_size`, `push_distinct_size` AS `push_distinct_size`, `member_login` AS `member_login`, `release_tag_name` AS `release_tag_name`, `release_name` AS `release_name`, `review_state` AS `review_state` FROM `default`.`github_events` LIMIT 1000 FORMAT Native
-SELECT `file_time`, `event_type`, `actor_login`, `repo_name`, `created_at`, `updated_at`, `action`, `comment_id`, `body`, `path`, `position`, `line`, `ref`, `ref_type`, `creator_user_login`, `number`, `title`, `labels`, `state`, `locked`, `assignee`, `assignees`, `comments`, `author_association`, `closed_at`, `merged_at`, `merge_commit_sha`, `requested_reviewers`, `requested_teams`, `head_ref`, `head_sha`, `base_ref`, `base_sha`, `merged`, `mergeable`, `rebaseable`, `mergeable_state`, `merged_by`, `review_comments`, `maintainer_can_modify`, `commits`, `additions`, `deletions`, `changed_files`, `diff_hunk`, `original_position`, `commit_id`, `original_commit_id`, `push_size`, `push_distinct_size`, `member_login`, `release_tag_name`, `release_name`, `review_state` FROM `default`.`github_events` LIMIT 101 FORMAT Native
+SELECT `commits` AS `commits` FROM `default`.`github_events` GROUP BY `commits` LIMIT 1000
+SELECT `date`, `count` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` LIMIT 1000
+SELECT `date`, `count` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` LIMIT 1000
+SELECT `event_type` AS `event_type`, COUNT(*) AS `count` FROM `default`.`github_events` GROUP BY `event_type` ORDER BY `count` DESC LIMIT 100
+SELECT `file_time` AS `file_time`, `event_type` AS `event_type`, `actor_login` AS `actor_login`, `repo_name` AS `repo_name`, `created_at` AS `created_at`, `updated_at` AS `updated_at`, `action` AS `action`, `comment_id` AS `comment_id`, `body` AS `body`, `path` AS `path`, `position` AS `position`, `line` AS `line`, `ref` AS `ref`, `ref_type` AS `ref_type`, `creator_user_login` AS `creator_user_login`, `number` AS `number`, `title` AS `title`, `labels` AS `labels`, `state` AS `state`, `locked` AS `locked`, `assignee` AS `assignee`, `assignees` AS `assignees`, `comments` AS `comments`, `author_association` AS `author_association`, `closed_at` AS `closed_at`, `merged_at` AS `merged_at`, `merge_commit_sha` AS `merge_commit_sha`, `requested_reviewers` AS `requested_reviewers`, `requested_teams` AS `requested_teams`, `head_ref` AS `head_ref`, `head_sha` AS `head_sha`, `base_ref` AS `base_ref`, `base_sha` AS `base_sha`, `merged` AS `merged`, `mergeable` AS `mergeable`, `rebaseable` AS `rebaseable`, `mergeable_state` AS `mergeable_state`, `merged_by` AS `merged_by`, `review_comments` AS `review_comments`, `maintainer_can_modify` AS `maintainer_can_modify`, `commits` AS `commits`, `additions` AS `additions`, `deletions` AS `deletions`, `changed_files` AS `changed_files`, `diff_hunk` AS `diff_hunk`, `original_position` AS `original_position`, `commit_id` AS `commit_id`, `original_commit_id` AS `original_commit_id`, `push_size` AS `push_size`, `push_distinct_size` AS `push_distinct_size`, `member_login` AS `member_login`, `release_tag_name` AS `release_tag_name`, `release_name` AS `release_name`, `review_state` AS `review_state` FROM `default`.`github_events` LIMIT 1000
+SELECT `file_time`, `event_type`, `actor_login`, `repo_name`, `created_at`, `updated_at`, `action`, `comment_id`, `body`, `path`, `position`, `line`, `ref`, `ref_type`, `creator_user_login`, `number`, `title`, `labels`, `state`, `locked`, `assignee`, `assignees`, `comments`, `author_association`, `closed_at`, `merged_at`, `merge_commit_sha`, `requested_reviewers`, `requested_teams`, `head_ref`, `head_sha`, `base_ref`, `base_sha`, `merged`, `mergeable`, `rebaseable`, `mergeable_state`, `merged_by`, `review_comments`, `maintainer_can_modify`, `commits`, `additions`, `deletions`, `changed_files`, `diff_hunk`, `original_position`, `commit_id`, `original_commit_id`, `push_size`, `push_distinct_size`, `member_login`, `release_tag_name`, `release_name`, `review_state` FROM `default`.`github_events` LIMIT 101
 SELECT `kz.date` as date FROM (SELECT * FROM (SELECT date, SUM(new_tested) as new_tested FROM covid WHERE location_key = 'RU' GROUP BY date) AS ru INNER JOIN (SELECT date, SUM(new_tested) as new_tested FROM covid WHERE location_key = 'KZ' GROUP BY date) AS kz ON ru.date = kz.date )
 SELECT `kz.date` as date FROM (SELECT * FROM (SELECT date, new_tested as new_tested FROM covid WHERE location_key = 'RU') AS ru INNER JOIN (SELECT date, new_tested as new_tested FROM covid WHERE location_key = 'KZ') AS kz ON ru.date = kz.date )
 SELECT `kz.sum(new_tested)` FROM (SELECT date, SUM(new_tested) FROM covid WHERE location_key = 'RU' GROUP BY date) AS ru JOIN (SELECT date, SUM(new_tested) FROM covid WHERE location_key = 'KZ' GROUP BY date) AS kz ON ru.date = kz.date
@@ -678,8 +678,8 @@ SELECT a.* FROM hits a join (SELECT * FROM hits_100m_compatible LIMIT 100)b on a
 SELECT a.* FROM hits a left join (SELECT * FROM hits_100m_compatible LIMIT 100)b on a.UserID = cast(b.UserID as UInt64)
 SELECT a.UserID, a.URL, b.UserID FROM hits AS a LEFT JOIN ( SELECT UserID, UserID as HaHa FROM hits as c) AS b USING (UserID) LIMIT 3
 SELECT action, count() FROM github_events WHERE event_type = 'WatchEvent' GROUP BY action
-SELECT actor_login AS actorLogin, t AS activeMonth, c AS activityCount, n AS activityRank FROM ( SELECT actor_login, toStartOfMonth(created_at) AS t, COUNT(*) AS c, row_number() OVER (PARTITION BY t ORDER BY c DESC) AS n FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' AND t = '2017-06-01' GROUP BY t, actor_login ORDER BY t, n LIMIT 5 BY t ) FORMAT Native
-SELECT actor_login AS actorLogin, t AS activeMonth, c AS activityCount, n AS activityRank FROM ( SELECT actor_login, toStartOfMonth(created_at) AS t, COUNT(*) AS c, row_number() OVER (PARTITION BY t ORDER BY c DESC) AS n FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t, actor_login ORDER BY t, n LIMIT 5 BY t ) FORMAT Native
+SELECT actor_login AS actorLogin, t AS activeMonth, c AS activityCount, n AS activityRank FROM ( SELECT actor_login, toStartOfMonth(created_at) AS t, COUNT(*) AS c, row_number() OVER (PARTITION BY t ORDER BY c DESC) AS n FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' AND t = '2017-06-01' GROUP BY t, actor_login ORDER BY t, n LIMIT 5 BY t )
+SELECT actor_login AS actorLogin, t AS activeMonth, c AS activityCount, n AS activityRank FROM ( SELECT actor_login, toStartOfMonth(created_at) AS t, COUNT(*) AS c, row_number() OVER (PARTITION BY t ORDER BY c DESC) AS n FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t, actor_login ORDER BY t, n LIMIT 5 BY t )
 SELECT actor_login, count() AS c FROM github_events WHERE repo_name = 'ClickHouse/ClickHouse' AND actor_login NOT LIKE '%[bot]%' AND actor_login NOT LIKE '%robot-%' AND event_type = 'PullRequestEvent' AND created_at >= '2022-01-01' AND action = 'opened' GROUP BY actor_login ORDER BY c DESC
 SELECT actor_login, count() AS c, c >= dateDiff('week', '2022-01-10'::Date, today()) * 4 AS ok FROM default.github_events WHERE created_at >= '2022-01-01' AND repo_name = 'ClickHouse/ClickHouse' AND event_type = 'PullRequestEvent' AND action = 'closed' AND actor_login = assignee GROUP BY actor_login ORDER BY c DESC
 SELECT actor_login, count() AS c, uniq(repo_name) AS repos FROM github_events WHERE event_type = 'PushEvent' GROUP BY actor_login ORDER BY c DESC LIMIT 50
@@ -717,7 +717,7 @@ SELECT actor_login, created_at, toString(event_type) AS event_type, toString(act
 SELECT actor_login, created_at, toString(event_type) AS event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND event_type like '%PullRequestReviewEvent%' AND actor_login NOT IN ('github-actions[bot]', 'codecov-commenter') AND number = 9276
 SELECT actor_login, created_at, toString(event_type) AS event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND match( event_type, 'PullRequestReviewEvent') AND actor_login NOT IN ('github-actions[bot]', 'codecov-commenter') AND number = 9276
 SELECT actor_login, created_at, toString(event_type) AS event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND multiMatchAny(event_type, ['PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent']) AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
-SELECT actor_login, created_at, toString(event_type) AS event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND multiMatchAny(event_type, ['PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent']) AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276 format CSV
+SELECT actor_login, created_at, toString(event_type) AS event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND multiMatchAny(event_type, ['PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent']) AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
 SELECT actor_login, created_at, toString(event_type) as eventType, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND event_type IN ('PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent') AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
 SELECT actor_login, created_at, toString(event_type) as event_type, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND event_type IN ('PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent') AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
 SELECT actor_login, created_at, toString(event_type) as event_type1, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND event_type IN ('PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent') AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
@@ -732,7 +732,7 @@ SELECT actor_login,count() FROM github_events GROUP by actor_login LIMIT 10
 SELECT area, count(distinct cell) FROM cell_towers WHERE lon > 54 and lon < 56 and lat > 54 and lat < 56 GROUP by area
 SELECT area, count(distinct cell) FROM cell_towers WHERE lon > 54 and lon < 56 and lat > 54 and lat < 56 GROUP by area order by uniqExact(cell)
 SELECT area, count(distinct cell) FROM cell_towers WHERE lon > 54 and lon < 56 and lat > 54 and lat < 56 GROUP by area order by uniqExact(cell) desc
-SELECT arrayJoin(NER) AS ingredient, count() AS c FROM recipes GROUP BY ingredient ORDER BY c DESC LIMIT 10 FORMAT JSON
+SELECT arrayJoin(NER) AS ingredient, count() AS c FROM recipes GROUP BY ingredient ORDER BY c DESC LIMIT 10
 SELECT arrayJoin(NER) AS k, count() AS c FROM recipes GROUP BY k ORDER BY c DESC LIMIT 50
 SELECT arrayJoin(NER) FROM recipes --WHERE title = 'Hot Granola'
 SELECT arrayJoin(NER), COUNT(NER) FROM recipes GROUP BY arrayJoin(NER) ORDER BY COUNT(NER) DESC
@@ -795,62 +795,62 @@ SELECT count() AS c FROM recipes
 SELECT count() FROM ( SELECT repo_name, count() AS stars FROM github_events WHERE event_type = 'WatchEvent' GROUP BY repo_name ORDER BY stars DESC LIMIT 50 )
 SELECT count() FROM ( SELECT repo_name, count() AS stars FROM github_events WHERE event_type = 'WatchEvent'GROUP BY repo_name )
 SELECT count() FROM blogs.countries
-SELECT count() FROM blogs.countries LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.country_codes LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.forex LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.forex_2020s LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.forex_usd LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.hackernews_json LIMIT 5000 FORMAT Native
+SELECT count() FROM blogs.countries LIMIT 5000
+SELECT count() FROM blogs.country_codes LIMIT 5000
+SELECT count() FROM blogs.forex LIMIT 5000
+SELECT count() FROM blogs.forex_2020s LIMIT 5000
+SELECT count() FROM blogs.forex_usd LIMIT 5000
+SELECT count() FROM blogs.hackernews_json LIMIT 5000
 SELECT count() FROM blogs.hackernews_json_v2
-SELECT count() FROM blogs.hackernews_json_v2 LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.http_logs LIMIT 5000 FORMAT Native
+SELECT count() FROM blogs.hackernews_json_v2 LIMIT 5000
+SELECT count() FROM blogs.http_logs LIMIT 5000
 SELECT count() FROM blogs.noaa
-SELECT count() FROM blogs.noaa LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.noaa_v2 LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.stop_words LIMIT 5000 FORMAT Native
-SELECT count() FROM blogs.uk_codes LIMIT 5000 FORMAT Native
+SELECT count() FROM blogs.noaa LIMIT 5000
+SELECT count() FROM blogs.noaa_v2 LIMIT 5000
+SELECT count() FROM blogs.stop_words LIMIT 5000
+SELECT count() FROM blogs.uk_codes LIMIT 5000
 SELECT count() FROM cell_towers
 SELECT count() FROM cell_towers WHERE lon > 54 and lon < 56 and lat > 54 and lat < 56 and radio = 'GSM'
 SELECT count() FROM cell_towers WHERE radio = 'GSM' and lon > 54 and lon < 56 and lat > 54 and lat < 56
-SELECT count() FROM default.benchmark_results LIMIT 5000 FORMAT Native
-SELECT count() FROM default.benchmark_runs LIMIT 5000 FORMAT Native
-SELECT count() FROM default.cell_towers LIMIT 5000 FORMAT Native
-SELECT count() FROM default.checks LIMIT 5000 FORMAT Native
-SELECT count() FROM default.covid LIMIT 5000 FORMAT Native
-SELECT count() FROM default.dish LIMIT 5000 FORMAT Native
-SELECT count() FROM default.dns LIMIT 5000 FORMAT Native
-SELECT count() FROM default.dns2 LIMIT 5000 FORMAT Native
-SELECT count() FROM default.food_facts LIMIT 5000 FORMAT Native
-SELECT count() FROM default.github_events LIMIT 5000 FORMAT Native
-SELECT count() FROM default.hackernews LIMIT 5000 FORMAT Native
+SELECT count() FROM default.benchmark_results LIMIT 5000
+SELECT count() FROM default.benchmark_runs LIMIT 5000
+SELECT count() FROM default.cell_towers LIMIT 5000
+SELECT count() FROM default.checks LIMIT 5000
+SELECT count() FROM default.covid LIMIT 5000
+SELECT count() FROM default.dish LIMIT 5000
+SELECT count() FROM default.dns LIMIT 5000
+SELECT count() FROM default.dns2 LIMIT 5000
+SELECT count() FROM default.food_facts LIMIT 5000
+SELECT count() FROM default.github_events LIMIT 5000
+SELECT count() FROM default.hackernews LIMIT 5000
 SELECT count() FROM default.hits
-SELECT count() FROM default.hits LIMIT 5000 FORMAT Native
+SELECT count() FROM default.hits LIMIT 5000
 SELECT count() FROM default.hits WHERE EventDate < '2013-07-10' and EventDate > '2013-07-01'
 SELECT count() FROM default.hits WHERE EventTime < '2022-10-10'
 SELECT count() FROM default.hits WHERE JavaEnable = 1
-SELECT count() FROM default.hits_100m_compatible LIMIT 5000 FORMAT Native
-SELECT count() FROM default.lineorder LIMIT 5000 FORMAT Native
-SELECT count() FROM default.loc_stats LIMIT 5000 FORMAT Native
-SELECT count() FROM default.menu LIMIT 5000 FORMAT Native
-SELECT count() FROM default.menu_item LIMIT 5000 FORMAT Native
-SELECT count() FROM default.menu_item_denorm LIMIT 5000 FORMAT Native
-SELECT count() FROM default.menu_page LIMIT 5000 FORMAT Native
-SELECT count() FROM default.minicrawl LIMIT 5000 FORMAT Native
-SELECT count() FROM default.ontime LIMIT 5000 FORMAT Native
-SELECT count() FROM default.opensky LIMIT 5000 FORMAT Native
-SELECT count() FROM default.primes LIMIT 5000 FORMAT Native
-SELECT count() FROM default.query_metrics_v2 LIMIT 5000 FORMAT Native
-SELECT count() FROM default.rdns LIMIT 5000 FORMAT Native
-SELECT count() FROM default.recipes LIMIT 5000 FORMAT Native
-SELECT count() FROM default.reddit LIMIT 5000 FORMAT Native
-SELECT count() FROM default.repos LIMIT 5000 FORMAT Native
-SELECT count() FROM default.repos_raw LIMIT 5000 FORMAT Native
-SELECT count() FROM default.run_attributes_v1 LIMIT 5000 FORMAT Native
-SELECT count() FROM default.stock LIMIT 5000 FORMAT Native
-SELECT count() FROM default.tokens LIMIT 5000 FORMAT Native
-SELECT count() FROM default.trips LIMIT 5000 FORMAT Native
-SELECT count() FROM default.uk_price_paid LIMIT 5000 FORMAT Native
-SELECT count() FROM default.wikistat LIMIT 5000 FORMAT Native
+SELECT count() FROM default.hits_100m_compatible LIMIT 5000
+SELECT count() FROM default.lineorder LIMIT 5000
+SELECT count() FROM default.loc_stats LIMIT 5000
+SELECT count() FROM default.menu LIMIT 5000
+SELECT count() FROM default.menu_item LIMIT 5000
+SELECT count() FROM default.menu_item_denorm LIMIT 5000
+SELECT count() FROM default.menu_page LIMIT 5000
+SELECT count() FROM default.minicrawl LIMIT 5000
+SELECT count() FROM default.ontime LIMIT 5000
+SELECT count() FROM default.opensky LIMIT 5000
+SELECT count() FROM default.primes LIMIT 5000
+SELECT count() FROM default.query_metrics_v2 LIMIT 5000
+SELECT count() FROM default.rdns LIMIT 5000
+SELECT count() FROM default.recipes LIMIT 5000
+SELECT count() FROM default.reddit LIMIT 5000
+SELECT count() FROM default.repos LIMIT 5000
+SELECT count() FROM default.repos_raw LIMIT 5000
+SELECT count() FROM default.run_attributes_v1 LIMIT 5000
+SELECT count() FROM default.stock LIMIT 5000
+SELECT count() FROM default.tokens LIMIT 5000
+SELECT count() FROM default.trips LIMIT 5000
+SELECT count() FROM default.uk_price_paid LIMIT 5000
+SELECT count() FROM default.wikistat LIMIT 5000
 SELECT count() FROM dish
 SELECT count() FROM food_facts
 SELECT count() FROM git_clickhouse.commits
@@ -997,7 +997,7 @@ SELECT cutToFirstSignificantSubdomain(domain) AS d, count() AS c FROM rdns GROUP
 SELECT date AS "Дата", sumIf(new_tested, date > '2020-01-01' and date <'2020-12-31') AS "Тестированных", sumIf(new_confirmed, date > '2020-01-01' and date <'2020-12-31') AS "Заражений", sumIf(new_deceased, date > '2020-01-01' and date <'2020-12-31') AS "Умерших", sumIf(new_recovered, date > '2020-01-01' and date <'2020-12-31') AS "Вылечившихся" FROM covid GROUP by date
 SELECT date AS "Дата", sumIf(new_tested, date > '2020-01-01' and date <'2020-12-31') AS "Тестированных", sumIf(new_confirmed, date > '2020-01-01' and date <'2020-12-31') AS "Зараженных", sumIf(new_deceased, date > '2020-01-01' and date <'2020-12-31') AS "Умерших", sumIf(new_recovered, date > '2020-01-01' and date <'2020-12-31') AS "Вылечившихся" FROM covid GROUP by date
 SELECT date AS "Дата", sumIf(new_tested, date > '2020-01-01' and date <'2020-12-31') AS "Тестированных", sumIf(new_confirmed, date > '2020-01-01' and date <'2020-12-31') AS "Зараженных", sumIf(new_deceased, date > '2020-01-01' and date <'2020-12-31') AS "Умерших", sumIf(new_recovered, date > '2020-01-01' and date <'2020-12-31') AS "Вылечившихся" FROM covid GROUP by date order by date
-SELECT date AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` GROUP BY date ORDER BY `MIN(count)` DESC LIMIT 100 FORMAT Native
+SELECT date AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` GROUP BY date ORDER BY `MIN(count)` DESC LIMIT 100
 SELECT date, groupArray( (location_key, new_tested) ) AS state FROM (SELECT date, location_key, SUM(new_tested) AS new_tested FROM covid GROUP BY date, location_key) WHERE location_key in ('RU', 'KZ', 'BY') GROUP BY date
 SELECT date, groupArray( (location_key, new_tested) ) AS stats FROM ( SELECT date, location_key, SUM(new_tested) AS new_tested FROM covid GROUP BY date, location_key ) GROUP BY date
 SELECT date, groupArray( (location_key, new_tested) ) AS stats FROM ( SELECT date, location_key, SUM(new_tested) AS new_tested FROM covid WHERE location_key IN ('RU', 'BY', 'KZ') GROUP BY date, location_key ) GROUP BY date
@@ -1152,7 +1152,7 @@ SELECT message, count() FROM git_clickhouse."commits" WHERE message ILIKE '%tras
 SELECT metric,count() FROM query_metrics_v2 GROUP by metric
 SELECT metric,count(*) FROM query_metrics_v2 GROUP by metric
 SELECT min(Year), max(Year), IATA_CODE_Reporting_Airline AS Carrier, count(*) AS cnt, sum(ArrDelayMinutes>30) AS flights_delayed, round(sum(ArrDelayMinutes>30)/count(*),2) AS rate FROM ontime WHERE DayOfWeek NOT IN (6,7) AND OriginState NOT IN ('AK', 'HI', 'PR', 'VI') AND DestState NOT IN ('AK', 'HI', 'PR', 'VI') AND FlightDate < '2010-01-01' GROUP by Carrier HAVING cnt>100000 and max(Year)>1990 ORDER by rate DESC LIMIT 1000
-SELECT min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` ORDER BY `MIN(count)` DESC LIMIT 100 FORMAT Native
+SELECT min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` ORDER BY `MIN(count)` DESC LIMIT 100
 SELECT min(created) FROM cell_towers WHERE lat between 54 AND 56 AND lon between 54 AND 56 GROUP by radio
 SELECT min(score) FROM reddit
 SELECT min(time) FROM git_clickhouse.commits
@@ -1339,7 +1339,7 @@ SELECT repo_name, sum(c) as clabel FROM ( SELECT * FROM ( SELECT repo_name, coun
 SELECT repo_name, sum(event_type = 'MemberEvent') AS invitations, sum(event_type = 'WatchEvent') AS stars FROM github_events WHERE event_type IN ('MemberEvent', 'WatchEvent') AND repo_name = 'koppi/iso-country-flags-svg-collection' GROUP BY repo_name HAVING stars >= 100 ORDER BY invitations DESC LIMIT 50
 SELECT repo_name, sum(event_type = 'MemberEvent') AS invitations, sum(event_type = 'WatchEvent') AS stars FROM github_events WHERE event_type IN ('MemberEvent', 'WatchEvent') GROUP BY repo_name HAVING stars >= 100 ORDER BY invitations DESC LIMIT 50
 SELECT repo_name, toDate(created_at) AS day, count() AS stars FROM github_events WHERE event_type = 'WatchEvent' GROUP BY repo_name, day ORDER BY count() DESC LIMIT 1 BY repo_name LIMIT 50
-SELECT repo_name, toString(event_type) AS event_type, actor_login, created_at, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND multiMatchAny(event_type, ['PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent']) AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276 format CSV
+SELECT repo_name, toString(event_type) AS event_type, actor_login, created_at, toString(action) AS action, number, merged_at FROM github_events WHERE repo_name = 'apache/pulsar' AND multiMatchAny(event_type, ['PullRequestEvent' , 'PullRequestReviewCommentEvent' , 'PullRequestReviewEvent' , 'IssueCommentEvent']) AND actor_login NOT IN ('github-actions[bot]' , 'codecov-commenter') AND number = 9276
 SELECT repo_name, uniq(actor_login) as people_reached_recently FROM github_events AS gh RIGHT OUTER JOIN (SELECT repo_name FROM github_events WHERE path LIKE '%package.json' AND (event_type = 'PullRequestReviewCommentEvent' OR event_type = 'CommitCommentEvent') GROUP BY repo_name) filteringt ON gh.repo_name = filteringt.repo_name WHERE created_at >= subtractMonths(now(), 3) GROUP BY repo_name ORDER BY people_reached_recently DESC LIMIT 10000 OFFSET 0
 SELECT resort_name, total_snow / 1000 AS total_snow_m, resort_location, month_year FROM ( SELECT resort_name, highest_snow.station_id, geoDistance(lon, lat, station_location.1, station_location.2) / 1000 AS distance_km, highest_snow.total_snow, station_location, month_year, (lon, lat) AS resort_location FROM ( SELECT sum(snowfall) AS total_snow, station_id, any(location) AS station_location, month_year, substring(station_id, 1, 2) AS code FROM blogs.noaa WHERE (date > '2017-01-01') AND (code = 'US') AND (elevation > 1800) GROUP BY station_id, toYYYYMM(date) AS month_year ORDER BY total_snow DESC LIMIT 1000 ) AS highest_snow INNER JOIN blogs.resorts ON highest_snow.code = resorts.code WHERE distance_km < 20 ORDER BY resort_name ASC, total_snow DESC LIMIT 1 BY resort_name, station_id ) ORDER BY total_snow DESC LIMIT 5
 SELECT resort_name, total_snow / 1000 AS total_snow_m, resort_location, month_year FROM ( SELECT resort_name, highest_snow.station_id, geoDistance(resorts_dict.lon, resorts_dict.lat, station_lon, station_lat) / 1000 AS distance_km, highest_snow.total_snow, (resorts_dict.lon, resorts_dict.lat) as resort_location, month_year FROM ( SELECT sum(snowfall) AS total_snow, station_id, dictGet(blogs.stations_dict, 'lat', station_id) AS station_lat, dictGet(blogs.stations_dict, 'lon', station_id) AS station_lon, month_year, dictGet(blogs.stations_dict, 'state', station_id) AS state FROM blogs.noaa WHERE (date > '2017-01-01') AND (state != '') AND (elevation > 1800) GROUP BY station_id, toYYYYMM(date) AS month_year ORDER BY total_snow DESC LIMIT 1000 ) AS highest_snow INNER JOIN blogs.resorts_dict ON highest_snow.state = resorts_dict.state WHERE distance_km < 20 ORDER BY resort_name ASC, total_snow DESC LIMIT 1 BY resort_name, station_id ) ORDER BY total_snow DESC LIMIT 5
@@ -1348,7 +1348,7 @@ SELECT round(avg(tip_amount), 2) FROM trips
 SELECT round(toUInt32OrZero(extract(menu_date, '^\d{4}')), -1) AS d, count(), round(avg(price), 2), bar(avg(price), 0, 100, 100) FROM menu_item_denorm WHERE (menu_currency = 'Dollars') AND (d > 0) AND (d < 2022) GROUP BY d ORDER BY d ASC
 SELECT round(toUInt32OrZero(extract(menu_date, '^\d{4}')), -1) AS d, count(), round(avg(price), 2), bar(avg(price), 0, 50, 100) FROM menu_item_denorm WHERE (menu_currency = 'Dollars') AND (d > 0) AND (d < 2022) AND (dish_name ILIKE '%burger%') GROUP BY d ORDER BY d ASC
 SELECT round(toUInt32OrZero(extract(menu_date, '^\d{4}')), -1) AS d, count(), round(avg(price), 2), bar(avg(price), 0, 50, 100) FROM menu_item_denorm WHERE (menu_currency IN ('Dollars', '')) AND (d > 0) AND (d < 2022) AND (dish_name ILIKE '%vodka%') GROUP BY d ORDER BY d ASC
-SELECT round(toUInt32OrZero(extract(menu_date, '^d{4}')), -1) AS d, count(), round(avg(price), 2), bar(avg(price), 0, 50, 100), any(dish_name) FROM menu_item_denorm WHERE (menu_currency IN ('Dollars', '')) AND (d > 0) AND (d < 2022) AND (dish_name ILIKE '%caviar%') GROUP BY d ORDER BY d ASC LIMIT 1000000000 FORMAT Native
+SELECT round(toUInt32OrZero(extract(menu_date, '^d{4}')), -1) AS d, count(), round(avg(price), 2), bar(avg(price), 0, 50, 100), any(dish_name) FROM menu_item_denorm WHERE (menu_currency IN ('Dollars', '')) AND (d > 0) AND (d < 2022) AND (dish_name ILIKE '%caviar%') GROUP BY d ORDER BY d ASC LIMIT 1000000000
 SELECT run_id,count(1) FROM benchmark_results GROUP by run_id
 SELECT samples FROM cell_towers Where radio = 'LTE' AND created > 2017/01/01
 SELECT samples From cell_towers
@@ -1433,21 +1433,21 @@ SELECT toDate(EventTime) as timeLabel, count(*) as total,'0' as type FROM hits G
 SELECT toDate(EventTime) as timeLabel, count(*) as total,'0' as type FROM hits WHERE EventTime >= '2022-11-30' and EventTime <= '2022-11-30' GROUP by timeLabel order by timeLabel
 SELECT toDate(EventTime) as timeLabel, count(*) as total,'0' as type FROM hits WHERE EventTime >= '2022-11-30' and EventTime <= '2022-11-30' GROUP by timeLabel order by timeLabel union all SELECT toDate(EventTime) as timeLabel, count(*) as total,'0' as type FROM hits WHERE EventTime >= '2022-11-30' and EventTime <= '2022-11-30' GROUP by timeLabel order by timeLabel
 SELECT toDate(EventTime),count(*) as count FROM hits GROUP by toDate(EventTime)
-SELECT toDate(`default`.`hits_100m_obfuscated`.`EventDate`) AS `EventDate`, count(*) AS `count`, count(distinct `default`.`hits_100m_obfuscated`.`UserID`) AS `count_2` FROM `default`.`hits_100m_obfuscated` WHERE (`default`.`hits_100m_obfuscated`.`EventDate` >= parseDateTimeBestEffort('2013-07-15 00:00:00') AND `default`.`hits_100m_obfuscated`.`EventDate` < parseDateTimeBestEffort('2013-07-29 00:00:00')) GROUP BY toDate(`default`.`hits_100m_obfuscated`.`EventDate`) ORDER BY toDate(`default`.`hits_100m_obfuscated`.`EventDate`) ASC LIMIT 1000 FORMAT TabSeparatedWithNamesAndTypes
+SELECT toDate(`default`.`hits_100m_obfuscated`.`EventDate`) AS `EventDate`, count(*) AS `count`, count(distinct `default`.`hits_100m_obfuscated`.`UserID`) AS `count_2` FROM `default`.`hits_100m_obfuscated` WHERE (`default`.`hits_100m_obfuscated`.`EventDate` >= parseDateTimeBestEffort('2013-07-15 00:00:00') AND `default`.`hits_100m_obfuscated`.`EventDate` < parseDateTimeBestEffort('2013-07-29 00:00:00')) GROUP BY toDate(`default`.`hits_100m_obfuscated`.`EventDate`) ORDER BY toDate(`default`.`hits_100m_obfuscated`.`EventDate`) ASC LIMIT 1000
 SELECT toDayOfWeek(file_time) weeks,count(comment_id) num FROM github_events WHERE file_time>='2022-11-01 00:00:00' GROUP by weeks
 SELECT toMonday(day) AS k, count() AS c, bar(c, 0, 10000, 100) AS bar FROM opensky WHERE origin IN ('UUEE', 'UUDD', 'UUWW') GROUP BY k ORDER BY k ASC
-SELECT toStartOfDay(time, 'Europe/Amsterdam')::INT AS t, sum(hits)::INT AS v FROM wikistat WHERE path = 'ClickHouse' GROUP BY t ORDER BY t FORMAT JSONCompactColumns
-SELECT toStartOfDay(toDateTime(`created_at`)) AS `__timestamp`, `event_type` AS `event_type`, COUNT(*) AS `count` FROM `default`.`github_events` GROUP BY `event_type`, toStartOfDay(toDateTime(`created_at`)) ORDER BY `count` DESC LIMIT 10000 FORMAT Native
-SELECT toStartOfDay(toDateTime(`date`)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(`date`)) ORDER BY `MIN(count)` DESC LIMIT 1000 FORMAT Native
-SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, count(`count`) AS `COUNT(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `COUNT(count)` DESC LIMIT 1000 FORMAT Native
-SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `MIN(count)` DESC LIMIT 100 FORMAT Native
-SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `MIN(count)` DESC LIMIT 1000 FORMAT Native
+SELECT toStartOfDay(time, 'Europe/Amsterdam')::INT AS t, sum(hits)::INT AS v FROM wikistat WHERE path = 'ClickHouse' GROUP BY t ORDER BY t
+SELECT toStartOfDay(toDateTime(`created_at`)) AS `__timestamp`, `event_type` AS `event_type`, COUNT(*) AS `count` FROM `default`.`github_events` GROUP BY `event_type`, toStartOfDay(toDateTime(`created_at`)) ORDER BY `count` DESC LIMIT 10000
+SELECT toStartOfDay(toDateTime(`date`)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(`date`)) ORDER BY `MIN(count)` DESC LIMIT 1000
+SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, count(`count`) AS `COUNT(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `COUNT(count)` DESC LIMIT 1000
+SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `MIN(count)` DESC LIMIT 100
+SELECT toStartOfDay(toDateTime(date)) AS `__timestamp`, min(`count`) AS `MIN(count)` FROM (SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date) AS `virtual_table` GROUP BY toStartOfDay(toDateTime(date)) ORDER BY `MIN(count)` DESC LIMIT 1000
 SELECT toStartOfHour(EventTime) as hour, RegionID FROM hits GROUP by toStartOfHour(EventTime), RegionID
-SELECT toStartOfMonth(created_at) AS t FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t LIMIT 5000 FORMAT Native
-SELECT toStartOfMonth(created_at) AS t FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t ORDER BY t DESC LIMIT 5000 FORMAT Native
-SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date LIMIT 1001 FORMAT Native
+SELECT toStartOfMonth(created_at) AS t FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t LIMIT 5000
+SELECT toStartOfMonth(created_at) AS t FROM github_events WHERE startsWith(repo_name, 'apache/pulsar') AND actor_login <> 'github-actions[bot]' GROUP BY t ORDER BY t DESC LIMIT 5000
+SELECT toStartOfMonth(created_at) as date, SUM (commits) as count FROM `default`.`github_events` GROUP by date order by date LIMIT 1001
 SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date
-SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date LIMIT 1001 FORMAT Native
+SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date < toStartOfMonth(now()) GROUP by date order by date LIMIT 1001
 SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date <= toStartOfMonth(now()) GROUP by date order by date
 SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date >= '2015-01-01' GROUP by date order by date
 SELECT toStartOfMonth(created_at) as date, count() as count FROM github_events WHERE date >= '2015-01-01' and date <= toStartOfMonth(now()) GROUP by date order by date

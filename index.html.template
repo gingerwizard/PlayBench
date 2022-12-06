@@ -295,8 +295,8 @@ const queries = [
 
 <div class="header stick-left">
     <span class="nowrap themes"><span id="toggle-dark">🌚</span><span id="toggle-light">🌞</span></span>
-    <h1>ClickBench — a Benchmark For Analytical DBMS</h1>
-    <a href="https://github.com/ClickHouse/ClickBench/">Methodology</a> | <a href="https://github.com/ClickHouse/ClickBench/">Reproduce and Validate the Results</a> | <a href="https://github.com/ClickHouse/ClickBench/">Add a System</a> | <a href="https://github.com/ClickHouse/ClickBench/">Report Mistake</a> | <a href="https://benchmark.clickhouse.com/hardware/">Hardware Benchmark</a>
+    <h1>PlayBench — a Benchmark For play.clickhouse.com</h1>
+    <a href="https://github.com/gingerwizard/PlayBench/">Methodology</a> | <a href="https://github.com/gingerwizard/PlayBench/">Reproduce and Validate the Results</a> | <a href="https://github.com/gingerwizard/PlayBench/">Add a System</a> | <a href="https://github.com/gingerwizard/PlayBench/">Report Mistake</a>
 </div>
 
 <table class="selectors-container stick-left">
