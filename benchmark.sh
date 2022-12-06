@@ -14,20 +14,18 @@ fi
 
 data_size=$(clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --query="SELECT sum(total_bytes) FROM system.tables WHERE database IN ('blogs', 'default')")
 now=$(date +'%Y-%m-%d')
-echo "{\"system\":\"Cloud\",\"date\":\"${now}\",\"machine\":\"720 GB\",\"cluster_size\":3,\"comment\":\"\",\"tags\":[\"Cloud\"],\"data_size\":${data_size}\",result\":[" > temp.json
+echo "{\"system\":\"Cloud\",\"date\":\"${now}\",\"machine\":\"720 GB\",\"cluster_size\":3,\"comment\":\"\",\"tags\":[\"Cloud\"],\"data_size\":${data_size},\"result\":[" > temp.json
 cat queries.sql | while read query; do
     clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --format=Null --query="SYSTEM DROP FILESYSTEM CACHE${on_cluster}"
     echo -n "[" >> temp.json
     for i in $(seq 1 $TRIES); do
-        RES=$(clickhouse client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --time --format=Null --query="$query" 2> errFile)
-        if [[ "$?" == "0" ]]; then
+        RES=$(clickhouse client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --time --format=Null --query="$query" 2>&1)
+        if [ "$?" == "0" ] && [ "${#RES}" -lt "10" ]; then
             echo "${QUERY_NUM}, ${i} - OK"
             echo -n "${RES}" >> temp.json
         else
-            ERR=$(<errFile)
-            echo "${QUERY_NUM}, ${i} - FAIL - ${ERR}"
+            echo "${QUERY_NUM}, ${i} - FAIL - ${RES}"
             echo -n "null" >> temp.json
-            rm errFile
         fi
         [[ "$i" != $TRIES ]] && echo -n "," >> temp.json
     done
