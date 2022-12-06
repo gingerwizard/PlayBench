@@ -56,6 +56,8 @@ See github.com/clickhouse/play.clickhouse.com
 
 See [ClickBench](https://github.com/ClickHouse/ClickBench/#results-usage-and-scoreboards)
 
+Primary difference is we run each time 5 times as Cloud can have upto 3 nodes behind a load balancer. This increases the chance of a hot execution.
+
 ### Useful scripts
 
 #### Find all queries in docs with play queries:
