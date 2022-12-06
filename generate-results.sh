@@ -15,7 +15,7 @@
         jq --compact-output ". += {\"source\": \"${file}\"}" "${file}"
         FIRST=0
     done
-
+    set -o noglob
     echo ']; // end of data'
     echo 'const queries = ['
     FIRST=1
@@ -26,5 +26,6 @@
     done
     echo ']; // end of queries'
     sed '1,/^\]; \/\/ end of queries$/d' index.html.template
+    set +o noglob
 ) > index.html
 
