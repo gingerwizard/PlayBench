@@ -20,7 +20,13 @@ cat queries.sql | while read query; do
     echo -n "[" >> temp.json
     for i in $(seq 1 $TRIES); do
         RES=$(clickhouse-client --host "${HOST:=localhost}" --user "${USER:=playbench}" --password "${PASSWORD:=}" --secure --time --format=Null --query="$query" 2>&1 > /dev/null ||:)
-        [[ "$?" == "0" ]] && echo "${QUERY_NUM}, ${i} - OK" && echo -n "${RES}" >> temp.json || echo "${QUERY_NUM}, ${i} - FAIL" && echo -n "null" >> temp.json
+        if [[ "$?" == "0" ]]; then
+            echo "${QUERY_NUM}, ${i} - OK"
+            echo -n "${RES}" >> temp.json
+        else
+            echo "${QUERY_NUM}, ${i} - FAIL"
+            echo -n "null" >> temp.json
+        fi
         [[ "$i" != $TRIES ]] && echo -n "," >> temp.json
     done
     echo "]," >> temp.json
