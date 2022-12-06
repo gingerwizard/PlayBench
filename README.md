@@ -12,13 +12,15 @@ To assess the impact of moving play.clickhouse.com from a self-managed environme
 
 We aim to identify where user experience will be better/worse and the types of queries most impacted.
 
-## As experienced by our users
+## Assumptions
 
 Performance can be dramatically different based on specific user quotas and settings. We assume `play` user settings without limitations on query throughput. We only test queries which execute successfully based on the quotas and limits applied to the `play` user. This user `playbench` is created on all clusters - [role]() and [user definition]().
 
 We only execute queries which target the `default` or `blogs` databases.
 
-## Limitations
+Queries are executed from a machine in the same aws region as the cluster to minimize latency. We rely on `SYSTEM DROP FILESYSTEM CACHE` to clear the FS cache between executions.
+
+## Limitations 
 
 The limitations of this benchmark allow keeping it easy to reproduce and to include more systems in the comparison. The benchmark represents only a subset of all possible workloads and scenarios - specifically it only tests historical queries of the play environment.
 
@@ -38,7 +40,6 @@ This script will generate a `results.json` file. Modify the contents of this inc
 Other fields should be automatically completed.
 
 Rename `results.json` to `<cloud|self-managed>-<total_mem_size>.json` and copy to `./results` e.g. `cloud-720.json`.
-
 
 The systems can be installed or used in any reasonable way: from a binary distribution, from a Docker container, from the package manager, or compiled - whatever is more natural and simple or gives better results.
 
