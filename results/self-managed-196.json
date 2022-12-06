@@ -1,4 +1,4 @@
-{"system":"ClickHouse","date":"2022-12-06","machine":"720 GB","cluster_size":3,"comment":"","tags":["Cloud"],"result":[
+{"system":"Self-Managed","date":"2022-12-06","machine":"196 GB","cluster_size":1,"comment":"","tags":["Self-Managed"],"result":[
 [0.011,0.017,0.011],
 [0.013,0.017,0.014],
 [0.021,0.013,0.018],

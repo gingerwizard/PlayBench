@@ -31,13 +31,13 @@ To add a self-managed or play Cloud environment, simply run `benchmark.sh`.
 This script will generate a `results.json` file. Modify the contents of this including:
 
 - `system` - set to either "Self-Managed" or "Cloud"
-- `machine` - amount of RAM e.g. `720 GB`
+- `machine` - amount of RAM e.g. `720 GB` - total of all nodes.
 - `cluster_size` - number of nodes
 - `comment` misc e.g. any fining tuning performed.
 
 Other fields should be automatically completed.
 
-Rename `results.json` to `<cloud|self-managed>-<mem_size>.json` and copy to `./results` e.g. `cloud-720.json`.
+Rename `results.json` to `<cloud|self-managed>-<total_mem_size>.json` and copy to `./results` e.g. `cloud-720.json`.
 
 
 The systems can be installed or used in any reasonable way: from a binary distribution, from a Docker container, from the package manager, or compiled - whatever is more natural and simple or gives better results.
