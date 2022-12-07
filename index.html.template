@@ -506,7 +506,7 @@ function clearElement(elem)
 }
 
 function selectRun(timings) {
-    return selectors.metric == 'cold' ? timings[0] : (timings.some(timing => timing !== null) ? Math.min(...timings.slice(1)) : null)
+    return selectors.metric == 'cold' ? timings[0] : (timings.some(timing => timing !== null) ? Math.min(...timings.slice(1).filter(timing => timing !== null)) : null)
 }
 
 function addNote(text) {
