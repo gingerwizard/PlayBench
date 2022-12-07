@@ -1,8 +1,8 @@
 {
   "system": "Self-Managed",
   "date": "2022-12-06",
-  "machine": "720 GB",
-  "cluster_size": 3,
+  "machine": "192 GB",
+  "cluster_size": 1,
   "comment": "",
   "tags": [
     "Self-Managed"
